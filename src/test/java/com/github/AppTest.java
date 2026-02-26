@@ -2,16 +2,17 @@ package com.github;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.concurrent.atomic.AtomicInteger;
 
 class AppTest {
 
-    private static int counter = 0;
+    private static AtomicInteger counter = new AtomicInteger(0);
 
     @Test
     void testCounterIncrement() throws InterruptedException {
 
-        Thread t1 = new Thread(() -> counter++);
-        Thread t2 = new Thread(() -> counter++);
+        Thread t1 = new Thread(() -> counter.incrementAndGet());
+        Thread t2 = new Thread(() -> counter.incrementAndGet());
 
         t1.start();
         t2.start();
@@ -19,7 +20,7 @@ class AppTest {
         t1.join();
         t2.join();
 
-        // This assertion will randomly fail
-        assertEquals(2, counter);
+        // This assertion will now consistently pass
+        assertEquals(2, counter.get());
     }
 }
