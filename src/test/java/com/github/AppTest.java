@@ -1,31 +1,25 @@
 package com.github;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AppTest extends TestCase {
+class AppTest {
 
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest(String testName) {
-        super(testName);
-    }
+    private static int counter = 0;
 
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite() {
-        return new TestSuite(AppTest.class);
-    }
+    @Test
+    void testCounterIncrement() throws InterruptedException {
 
-    /**
-     * Rigorous Test :-)
-     */
-    public void testApp() {
-        assertTrue(true);
+        Thread t1 = new Thread(() -> counter++);
+        Thread t2 = new Thread(() -> counter++);
+
+        t1.start();
+        t2.start();
+
+        t1.join();
+        t2.join();
+
+        // This assertion will randomly fail
+        assertEquals(2, counter);
     }
 }
