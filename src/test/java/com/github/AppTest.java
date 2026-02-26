@@ -1,12 +1,18 @@
 package com.github;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.concurrent.atomic.AtomicInteger;
 
 class AppTest {
 
-    private static AtomicInteger counter = new AtomicInteger(0);
+    private AtomicInteger counter;
+
+    @BeforeEach
+    void setUp() {
+        counter = new AtomicInteger(0);
+    }
 
     @Test
     void testCounterIncrement() throws InterruptedException {
